@@ -1,0 +1,393 @@
+
+entity Dossier {
+	numDossierNor String
+    numeroDossierGAIA String
+    identifiantGAIA Long
+    dateReceptionNor LocalDate
+    dateCreation LocalDate
+    dateTraitement LocalDate
+    validationDateNor LocalTime
+    codeOrga String
+    dosVerrou String
+    dateVerrou LocalDate
+    dosEnAttente String
+    attentePA Boolean
+    teRetroactif Boolean
+    cdAgent String
+    userCreation String
+    timeCreation LocalTime
+    userMaj String
+    timeMaj LocalTime
+    numMaj Integer
+}
+entity Echeancier {
+	//idProcedure Long
+    //idPenalite Long
+    //idPieceEcheancier Long
+    //idPieceEtatDette Long
+    //idEtudeSolvabilite Long
+    montantRAV BigDecimal
+    montantPenalite BigDecimal
+    montantRFG BigDecimal
+    codeMotif MotifDette
+    typeRemboursement TypeRemboursement
+    codeMotifHorsDecret CodeMotifHorsDecret
+    premierVersement Boolean
+    detteSupBMAF Boolean
+    timeCreationEcheancier LocalTime
+    userMaj String
+    timeMaj LocalTime
+    numMaj Integer
+}
+enum MotifDette {
+	NOUVEAU_TE, PA_VERSEE, FIN_DE_PA_ENF, INSOLVABILITE, REGUL_CPT, DEFAUT_PAI, MODIF_SOLVA, DECES_ENF, DECES_CRE,
+	CHGT_SITFAM, CHGT_SITENF, PENALITE_PROC, ANN_PENALITE, AUCUN, CONSTAT_SOLVA, TE_RETROACTIF, MAINT_DEF_AMIAB, DEF_AVANT_IF, SIGNALT_IMPAYES, AUTRE_MOTIF, PENALITE_SEULE, AJOUT_ENFANT
+}
+enum TypeRemboursement {
+	INTEGRAL, MENSUEL, HORS_DECRET
+}
+enum CodeMotifHorsDecret {
+	MOTIF_1, MOTIF_2, MOTIF_3
+}
+entity EcheancierMois {
+ 	//idEcheancier Long
+    mois LocalDate
+    creancesVisiblesRecouvrees Boolean
+    cdStatutActuel StatutEcheancierMois
+    userMaj String
+    timeMaj LocalTime
+    numMaj Integer
+}
+enum StatutEcheancierMois {
+	ACTIF, SUSPENDU, PASSAGE_REC_FORCE
+}
+entity EcheancierMoisCreance {
+	montantAttendu BigDecimal
+    userCreation String
+    timeCreation LocalTime
+}
+entity EcheancierMoisStatutHisto {
+	cdStatut StatutEcheancierMois
+ 	userCreation String
+}
+entity EtatDetteCreance {
+	typeCreance TypeCreance
+    montantRecouvreInitial BigDecimal
+    userCreation String
+    timeCreation LocalTime
+}
+enum TypeCreance {
+	RTC, ITC, IPE, RPE, RSF, RAP, RFJ, RFI, RDI, RFG
+}
+entity EtatDetteMois {
+	//idDossier Long
+    //idEcheancier Long
+    mois LocalDate
+    montantPADu BigDecimal
+    montantPAVerse BigDecimal
+    montantASFR BigDecimal
+    asfrSaisie Boolean
+    userMaj String
+    timeMaj LocalTime
+    numMaj Integer
+}
+entity Personne {
+	nir String
+    cleNir String
+    numAllocCristal Integer
+    numPersCristal Integer
+    cdOrganisme String
+    typeOrganisme OrganismeRattachement
+    numInterneTiers Integer
+    numTiers Integer
+    rangFonctionTiers Integer
+    dtdSitfam LocalDate
+    cdSitfam String
+    cdNationalite String
+   	userMaj String
+    timeMaj LocalTime
+    numMaj Integer
+}
+enum OrganismeRattachement {
+	CAF, MSA
+}
+entity Beneficiaire {
+	montantBasePA BigDecimal
+    dateSortie LocalDate
+    userMaj String
+    timeMaj LocalTime
+    numMaj Integer
+}
+
+entity HistoriqueAction {
+	//numDossier String
+    //numDemarche String
+    codeOrga String
+    libelle String
+    detail String
+    valeurAv String
+    valeurAp String
+    date LocalTime
+    origine OrigineAction
+    cdAgent String
+    userCreation String
+    timeCreation LocalTime
+    userMaj String
+    timeMaj LocalTime
+    numMaj Integer
+}
+enum OrigineAction {
+	REC, EUA, IF
+}
+entity ModePaiement {
+	//idDossier Long
+    //idProcedure Long
+    code ModalitePaiement
+    dateEffet LocalDate
+    userMaj String
+    timeMaj LocalTime
+    numMaj Integer
+}
+enum ModalitePaiement {
+	PRELEVEMENT, VIREMENT, CHEQUE, INCONNU
+}
+entity Procedure {
+	rang Integer
+    nature ProcedureNature
+    dateInit LocalDate
+    dateSusp LocalDate
+    dateCloture LocalDate
+   	userMaj String
+    timeMaj LocalTime
+    numMaj Integer
+}
+enum ProcedureNature {
+	PROC_AMIABLE, PAIEMENT_DIRECT, SAISIE_REMU, RCV_PUBLIC, SAISIE_PRESTA, PROC_JEX, MIN_AFF_ETR,
+	MIN_JUSTICE
+}
+entity Penalite {
+	mtImplante BigDecimal
+    mtRemise BigDecimal
+    solde BigDecimal
+    dtPenalite LocalDate
+    dtLimite LocalDate
+    dtRecours LocalDate
+    motifRemise CodeMotifRemisePenalite
+    commentaireRemise String
+    dtDecisionRemise LocalDate
+    accordRemise Boolean
+    dtAnnulation LocalDate
+    motifAnnulation CodeMotifAnnulationPenalite
+    commentaireAnnulation String
+    dtAnnulationRemise LocalDate
+    cdAgent String
+    userCreation String
+    timeCreation LocalTime
+    userMaj String
+    timeMaj LocalTime
+    numMaj Integer
+}
+enum CodeMotifRemisePenalite {
+    BONNE_FOI_DEB, RESS_INSUFF, ABS_ELE_REELS
+}
+enum CodeMotifAnnulationPenalite {
+	ABDN_CREANCE, ERREUR_CAF, COURRIER_PND, PAIEMENT_IF8J, DECES_DEBITEUR, DECES_ENFANT, DISPARITION, BASCULE_NSF
+}
+entity TitreExecutoire {
+    userMaj String
+    timeMaj LocalTime
+    numMaj Integer
+}
+entity Verification {
+	motif MotifVerif
+    dateVerif LocalDate
+    dateEligible LocalDate
+    scoreVerif Integer
+    codeAgentVerif String
+    cdAgent String
+    userCreation String
+    timeCreation LocalTime
+    userMaj String
+    timeMaj LocalTime
+    numMaj Integer
+}
+enum MotifVerif {
+	A_VERIFIER, A_VERIFIER_RJT, ENC_VERIF, REJETE, LIB_AUTO, VALIDE_NON_VERI, VALIDE
+}
+entity StatutDossier {
+	dateDebut LocalTime
+    dateFin LocalTime
+    codeStatut DossierStatut
+    motif StatutDossierMotif
+    cdAgent String
+    userCreation String
+    timeCreation LocalTime
+    userMaj String
+    timeMaj LocalTime
+    numMaj Integer
+}
+enum DossierStatut {
+	INI, TRT, ATT, ENC, SUS, CLO, SOMMEIL
+}
+enum StatutDossierMotif {
+	INSOLVABILITE, IMP_ABS, DECES, DETTE_SOLDEE, DETTE_PRESCRITE, FDS_INSAISIS, ABDN_CREANCIER, ABSENCE_REPONSE,
+	ERREUR_CAF, MED_FAM, REV_PA_EN_COURS, PALIER_PA, ECHEANCIER, PALIER_ATRAITER, REOUVERTURE, CLO_SYS_ANT, IF_ACTIVE,
+	PENALITE, DEFAIL_TECHNIQ, CLO_PRO_MANU, VERS_SUP_DUES, CHT_COUPLE_ISO, CHT_ISO_COUPLE, ENF_A_CHARGE, ENF_FIN_CHARGE,
+	DECES_ENFANT, DEPART_ENFANT, DECES_CREANCIER, DECES_DEBITEUR
+}
+entity StatutProcedure {
+	statut ProcedureStatut
+    motif ProcedureMotif
+    dateDebut LocalDate
+    dateFin LocalDate
+    commentaire String
+    motifDetailCloPro String
+    flagIfEnCours Boolean
+    flagEnvoiCourrier Boolean
+    cdAgent String
+    userCreation String
+    timeCreation LocalTime
+    userMaj String
+    timeMaj LocalTime
+    numMaj Integer
+}
+enum ProcedureStatut {
+	A_INITIALISER, INITIALISE, ATT_PAIEMENT, EN_COURS, A_TRAITER, DEFAILLANCE, SUSPENDU, A_CLOTURER, CLOTURE,
+	DELAI_DEPASSE
+}
+enum ProcedureMotif {
+	DETTE_SOLDEE, PAS_REC_FORCE, DETTE_PRESCRITE, FDS_INSAISIS, ABDN_CREANCIER, REV_PA_EN_COURS, REG_DOS_EN_CRS,
+	ATT_JUSTIF, ERREUR_CAF, DECES, FIN_PA_DUE, INSOLVABILITE, ANN_REM_PEN
+}
+
+entity Demarche {
+	date LocalDate
+    numero String
+    origine OrigineDemarche
+    statut DemarcheStatut
+    cdAgent String
+    userCreation String
+    timeCreation LocalTime
+    userMaj String
+    timeMaj LocalTime
+    numMaj Integer
+}
+enum OrigineDemarche {
+DEFAILLANCE, ARRIERE, IF_IMPAYES, ECHEC, IF_SEULE
+}
+enum DemarcheStatut {
+INITIAL, EN_ATTENTE, APPROUVE, A_VERIFIER, A_TRAITER, POUR_MSA, REFUSE, A_SAISIR, POUR_NSF
+}
+entity SituationPro {
+	dateDebut LocalDate
+    dateFin LocalDate
+    code String
+    commentaire String
+    idDebiteur Long
+    cdAgent String
+    userCreation String
+    timeCreation LocalTime
+    userMaj String
+    timeMaj LocalTime
+    numMaj Integer
+}
+
+entity EtudeSolvabilite {
+	//idDossier Long
+    userCreation String
+    timeCreation LocalTime
+}
+
+entity MoisSolvabilite {
+	mois LocalDate
+    codeEtat CodeEtatSolvabilite
+    cdAgent String
+    userCreation String
+    timeCreation LocalTime
+    userMaj String
+    timeMaj LocalTime
+    numMaj Integer
+}
+enum CodeEtatSolvabilite {
+	NC, INS, SOL
+}
+
+
+entity InfosBancairesHisto {
+	idPersonne Long
+    titulaireCompteDebite String
+    bic String
+    iban String
+    rumSepa String
+    dtSignatureSepa LocalDate
+	userCreation String
+    timeCreation LocalTime
+}
+entity CibleDossierJour {
+	code CodeCible
+	userMaj String
+    majDate LocalTime
+    numMaj Integer	
+}
+enum CodeCible {
+	PERIODE_DEF, VENTIL, CORREC_VENTIL, REC_FORCE, CLOT_PROC_DETTE, SOLVA, ACCORD_DEB, MOTIF_ETA_DETTE, IMP_PENALITE,
+	ANN_PENALITE, REM_PENALITE, ASFR_HORS_HISTO, PAS_SOL, PAS_INS_DEM, PAS_INS_ENC
+}
+relationship OneToOne {
+	//Personne{debiteur} to Debiteur
+    //Personne{creancier} to Creancier
+    Dossier{verification} to Verification
+}
+
+relationship ManyToOne {
+	Beneficiaire{titreExecutoire} to TitreExecutoire
+    Beneficiaire{personne} to Personne
+    Demarche{dossier} to Dossier
+    //Dossier{debiteur} to Debiteur
+    //Dossier{creancier} to Creancier
+    Dossier{debiteur} to Personne
+    Dossier{creancier} to Personne
+    Echeancier{procedure} to Procedure
+    Echeancier{penalite} to Penalite
+    Echeancier{etude} to EtudeSolvabilite
+    EcheancierMois{echeancier} to Echeancier
+    EcheancierMoisCreance{echeancierMois} to EcheancierMois
+    EtatDetteCreance{echeancier} to Echeancier
+    EtatDetteMois{dossier} to Dossier
+    EtatDetteMois{echeancier} to Echeancier
+    EtudeSolvabilite{dossier} to Dossier
+    ModePaiement{dossier} to Dossier
+    //ModePaiement{procedure} to Procedure
+    //Penalite{dossier} to Dossier
+    //Procedure{dossier} to Dossier
+    //StatutDossier{dossier} to Dossier
+    //StatutProcedure{procedure} to Procedure
+    HistoriqueAction{dossier} to Dossier
+    HistoriqueAction{demarche} to Demarche
+    SituationPro{debiteur} to Personne
+}
+
+relationship OneToMany {    
+    Dossier{titreExec} to TitreExecutoire
+    Dossier{statut} to StatutDossier
+    Dossier{demarche} to Demarche
+    Dossier{procedure} to Procedure
+    Dossier{cible} to CibleDossierJour
+    Dossier{etude} to EtudeSolvabilite
+    Dossier{penalite} to Penalite
+    Dossier{infosBancairesHisto} to InfosBancairesHisto
+    Dossier{defaillance} to EtatDetteMois
+    EtudeSolvabilite{mois} to MoisSolvabilite
+    Procedure{statut} to StatutProcedure
+    Procedure{echeancier} to Echeancier
+    Procedure{modePaiement} to ModePaiement
+}
+
+// Use Data Transfer Objects (DTO)
+dto * with mapstruct
+
+// Set service options to all except few
+service * with serviceImpl
+
+// Set an angular suffix
+// angularSuffix * with mySuffix
